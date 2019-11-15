@@ -1,0 +1,21 @@
+{% extends 'registration/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="signForm">
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-outline-primary">Login</button>
+    </form>
+    <div class="text-muted mb-4 mt-3">
+        <a href="" class="btn btn-sm btn-outline-primary">
+            <small>
+                <b>Create Account</b>
+            </small>
+        </a>
+        div 
+        <a href="" class="btn btn-link float-right"><small>Forgot Password</small></a>
+    </div>
+</div>
+{% endblock %}
