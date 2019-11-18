@@ -6,9 +6,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', include('farmer.urls')),
     path('admin/', admin.site.urls),
-    path('auth/', include('registration.urls'))
+    path('account/', include('account.urls'))
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
                           document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

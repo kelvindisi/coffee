@@ -1,5 +1,11 @@
-{% extends 'registration/layout.html' %}
+{% extends 'farmer/layout.html' %}
 {% load crispy_forms_tags %}
+
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'account/custom.css' %}">
+{% endblock %}
+
 
 {% block body %}
 <div class="signForm">
@@ -9,7 +15,7 @@
         <button class="btn btn-primary">Create Account</button>
     </form>
     <small class="text-muted float-right">Already have and account?
-        <a href="{% url 'user:login' %}">Login</a>
+        <a href="{% url 'account:login' %}">Login</a>
     </small>
 </div>
 {% endblock %}

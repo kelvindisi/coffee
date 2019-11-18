@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # MYAPPS
-    'registration.apps.RegistrationConfig',
+    'account.apps.AccountConfig',
     'farmer.apps.FarmerConfig',
     # django apps
     'crispy_forms',
@@ -80,8 +80,15 @@ WSGI_APPLICATION = 'coffee.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'coffee',
+        'PORT': 3306,
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'OPTIONS': {
+            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
+        }
     }
 }
 
@@ -128,7 +135,9 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = 'farmer:index'
-LOGOUT_REDIRECT_URL = 'user:login'
+LOGOUT_REDIRECT_URL = 'account:login'
 LOGIN_URL = 'user:login'
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

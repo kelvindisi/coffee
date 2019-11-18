@@ -1,0 +1,27 @@
+.signForm {
+    max-width: 450px;
+    border: 1px solid #ddd;
+    margin: 30px auto auto auto;
+    padding: 20px 20px 30px 20px;
+    border-radius: 10px;
+}
+
+.profile {
+    max-width: 80%;
+    margin: 20px auto 20px auto;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 20px;
+
+    .thumbnail {
+        max-width: 90px;
+        max-height: 90px;
+        background: #ddd;
+        margin-right: 15px;
+    }
+
+    .update-form {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}

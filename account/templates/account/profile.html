@@ -1,0 +1,38 @@
+{% extends 'farmer/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'account/custom.css' %}">
+{% endblock %}
+
+
+{% block body %}
+<div class="card profile">
+    <div class="card-body">
+        <div class="card-title">
+            <h4>
+                <img src="{{ user.profile.image.url }}" alt="{{ user.username }} Profile"
+                    class="rounded-circle thumbnail">
+                <strong>Username: </strong>Kelvindisi
+            </h4>
+            <hr>
+        </div>
+        <div class="card-text">
+            <p><strong>Email:</strong> {{ user.email }} </p>
+            <p><strong>Gender:</strong> {{ user.profile.gender }}</p>
+            <div class="update-form mt-4">
+                <form action="" enctype="multipart/form-data" method="post">
+                    {% csrf_token %}
+                    {{ userForm|crispy }}
+                    {{ profileForm|crispy }}
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline-primary">Update Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
