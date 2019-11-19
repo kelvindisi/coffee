@@ -1,4 +1,12 @@
 body {
   padding-top: 55px;
 }
+
+.addForm {
+  max-width: 550px;
+  margin: 20px auto 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
 /*# sourceMappingURL=universal.css.map */

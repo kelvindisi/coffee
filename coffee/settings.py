@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # MYAPPS
     'account.apps.AccountConfig',
     'farmer.apps.FarmerConfig',
+    'staff.apps.StaffConfig',
     # django apps
     'crispy_forms',
     'django.contrib.admin',

@@ -1,0 +1,31 @@
+{% extends 'staff/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="table-response container mt-4">
+    <table class="table table-striped dt_table">
+        <thead>
+            <tr>
+                <th>Factory Name</th>
+                <th>Email</th>
+                <th>Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for factory in factories %}
+            <tr>
+                <td>{{ factory.name }}</td>
+                <td>{{ factory.email }}</td>
+                <td>
+                    <a href="{% url 'staff:factory_delete' factory.id %}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
+                    <a href="{% url 'staff:factory_update' factory.id %}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block scripts %}
+{% include 'staff/dataTables.html' %}
+{% endblock %}

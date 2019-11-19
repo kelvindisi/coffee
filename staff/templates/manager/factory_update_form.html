@@ -1,0 +1,15 @@
+{% extends 'staff/layout.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+<div class="addForm container">
+  <form action="" method="post">
+    <fieldset>
+      <legend>Add Factory</legend>
+      {% csrf_token %} {{ form|crispy }}
+      <button class="btn btn-outline-primary">
+        Save Updates <i class="fas fa-edit"></i>
+      </button>
+    </fieldset>
+  </form>
+</div>
+{% endblock %}
