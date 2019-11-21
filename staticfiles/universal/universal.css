@@ -2,6 +2,22 @@ body {
   padding-top: 55px;
 }
 
+.navbar-black {
+  color: #000000;
+}
+
+.navbar-black a {
+  color: #525151;
+}
+
+.navbar-black .navbar-brand {
+  font-weight: bolder;
+}
+
+.bg-yellow {
+  background-color: #7325da;
+}
+
 .addForm {
   max-width: 550px;
   margin: 20px auto 20px auto;

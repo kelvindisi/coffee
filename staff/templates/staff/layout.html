@@ -15,33 +15,75 @@
 </head>
 
 <body>
-    <nav class=" navbar navbar-dark bg-primary navbar-expand-sm fixed-top" role="navigation" aria-label="navigation bar">
+    <nav class=" navbar navbar-dark bg-yellow navbar-expand-sm fixed-top" role="navigation" aria-label="navigation bar">
         <a href="" class="navbar-brand">Staff Account</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#homeNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="homeNav">
             <ul class="navbar-nav">
+                <!--Super Adminstrator-->
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Factories</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-warehouse"></i>
+                        Factories</a>
                     <div class="dropdown-menu">
                         <a href="{% url 'staff:factories' %}" class="dropdown-item">All Factories</a>
                         <a href="{% url 'staff:add_factory' %}" class="dropdown-item">Add Factory</a>
                     </div>
                 </li>
+                <li class="nav-item dropdown">
+                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user-alt"></i>
+                        Admin</a>
+                    <div class="dropdown-menu">
+                        <a href="" class="dropdown-item">Add New</a>
+                        <a href="" class="dropdown-item">Admin List</a>
+                    </div>
+                </li>
+                <!--End of Super admin-->
+
+                <!--Factory Accountant-->
+                <li class="nav-item dropdown">
+                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Accounts</a>
+                    <div class="dropdown-menu">
+                        <a href="" class="dropdown-item">Customer Accounts</a>
+                        <a href="" class="dropdown-item">Pending Payment</a>
+                    </div>
+                </li>
+                <div class="nav-item dropdown">
+                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown"> <i class="fas fa-book"></i>
+                        Reports</a>
+                    <div class="dropdown-menu">
+                        <a href="" class="dropdown-item">Payment History</a>
+                        <a href="" class="dropdown-item">Payment Report</a>
+                        <a href="" class="dropdown-item">Correction History</a>
+                    </div>
+                </div>
+                <!--End of factory Accountant-->
+
+                <!--Factory Adminstrator-->
+                <li class="nav-item dropdown">
+                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown"> <i class="fas fa-user"></i>
+                        Staff</a>
+                    <div class="dropdown-menu">
+                        <a href="" class="dropdown-item">Add New</a>
+                        <a href="" class="dropdown-item">Manage</a>
+                    </div>
+                </li>
+                <!--End of Factory Adminstrator-->
+
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="" class="nav-link">Notifications</a>
+                    <a href="" class="nav-link"><i class="fas fa-bell"></i></a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Settings</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i></a>
                     <div class="dropdown-menu">
                         <a href="{% url 'account:profile' %}" class="dropdown-item">Profile</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'account:logout' %}" class="nav-link">Logout</a>
+                    <a href="{% url 'account:logout' %}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </li>
             </ul>
         </div>
