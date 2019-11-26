@@ -1,0 +1,14 @@
+{% extends 'staff/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+
+<div class="addForm">
+    <form action="" method="POST">
+        {{ form|crispy }}
+        <button class="btn btn-outline-success">Save</button>
+    </form>
+</div>
+{% endblock %}
+
+100000 * (( 0.0392 * (1 + 0.0392) ^ 30) / (((1 + 0.0392) ^ 30)-1))

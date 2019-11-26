@@ -33,13 +33,31 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user-alt"></i>
-                        Admin</a>
+                        Factory Admin</a>
                     <div class="dropdown-menu">
-                        <a href="" class="dropdown-item">Add New</a>
-                        <a href="" class="dropdown-item">Admin List</a>
+                        <a href="{% url 'staff:add_station_admin' %}" class="dropdown-item">Add New</a>
+                        <a href="{% url 'staff:factory_admins_list' %}" class="dropdown-item">Admin List</a>
                     </div>
                 </li>
                 <!--End of Super admin-->
+                <!--Factory Adminstrator-->
+                
+                <li class="nav-item dropdown">
+                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown"> <i class="fas fa-user"></i>
+                        Staff</a>
+                    <div class="dropdown-menu">
+                        <a href="" class="dropdown-item">Add New</a>
+                        <a href="" class="dropdown-item">Manage</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Products</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'factory_admin:add_product' %}" class="dropdown-item">New Record</a>
+                        <a href="" class="dropdown-item">Record List</a>
+                    </div>
+                </li>
+                <!--End of Factory admin-->
 
                 <!--Factory Accountant-->
                 <li class="nav-item dropdown">
@@ -59,17 +77,6 @@
                     </div>
                 </div>
                 <!--End of factory Accountant-->
-
-                <!--Factory Adminstrator-->
-                <li class="nav-item dropdown">
-                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown"> <i class="fas fa-user"></i>
-                        Staff</a>
-                    <div class="dropdown-menu">
-                        <a href="" class="dropdown-item">Add New</a>
-                        <a href="" class="dropdown-item">Manage</a>
-                    </div>
-                </li>
-                <!--End of Factory Adminstrator-->
 
             </ul>
             <ul class="navbar-nav ml-auto">

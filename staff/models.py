@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import User
+from account.models import UserModel
 
 
 class Factory(models.Model):
@@ -18,7 +18,7 @@ class Factory(models.Model):
 
 
 class Account(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     balance = models.IntegerField(default=0)
 
     def __str__(self):
@@ -34,11 +34,11 @@ class Transaction(models.Model):
         ('cancel', 'Cancel'),
         ('correction', 'Correction')
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     amount = models.IntegerField()
     date = models.DateField(auto_now_add=True)
     initiated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="accountant")
+        UserModel, on_delete=models.CASCADE, related_name="accountant")
     transaction_type = models.CharField(
         max_length=20, choices=transaction_types)
 

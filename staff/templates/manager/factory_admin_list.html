@@ -2,8 +2,8 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-<div class="table-response">
-    <table class="table table-striped">
+<div class="table-responsive container mt-4">
+    <table class="table table-striped dt_table">
         <thead>
             <tr>
                 <th>Full Name</th>
@@ -12,8 +12,20 @@
             </tr>
         </thead>
         <tbody>
-            <!--List of factory managers-->
+            {% for admin in factory_admins %}
+            <tr>
+                <td>{{admin.first_name}}</td>
+                <td>{{admin.last_name}}</td>
+                <td>
+                    <a href="" class="btn btn-sm btn-outline-primary"><i class="fas fa-delete"></i></a>
+                    <a href="" class="btn btn-sm btn-outline-danger"><i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
+{% endblock %}
+{% block scripts %}
+{% include "staff/dataTables.html" %}
 {% endblock %}
