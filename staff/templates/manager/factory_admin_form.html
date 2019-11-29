@@ -6,7 +6,7 @@
     <form action="" method="post">
         {% csrf_token %}
         {{ form|crispy }}
-        <button class="btn btn-outline-primary">Add</button>
+        <button class="btn btn-outline-primary">Add <i class="fas fa-plus"></i></button>
     </form>
 </div>
 {% endblock %}

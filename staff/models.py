@@ -17,6 +17,11 @@ class Factory(models.Model):
         return f"{self.name} - {self.email}"
 
 
+class FactoryStaff(models.Model):
+    staff = models.OneToOneField(UserModel, on_delete=models.CASCADE)
+    factory = models.ForeignKey(Factory, on_delete=models.CASCADE)
+
+
 class Account(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     balance = models.IntegerField(default=0)

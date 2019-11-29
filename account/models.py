@@ -4,22 +4,18 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 # Create your models here.
 class UserManager(BaseUserManager):
-    def create_user(self, id_number, email, first_name, last_name, password=None, **kwargs):
+    def create_user(self, id_number, email, password=None, **kwargs):
         if not id_number:
             raise ValueError('ID Number is required')
         if not email:
             raise ValueError('Enter valid email please')
-        if not first_name or not last_name:
-            raise ValueError('Please enter your name')
         if not email:
             raise ValueError('You must enter password')
 
         user = self.model(
             id_number=id_number,
             email=self.normalize_email(email),
-            username = id_number,
-            first_name = first_name,
-            last_name = last_name
+            username=id_number
         )
         user.set_password(password)
 
@@ -27,13 +23,11 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, id_number, email, first_name, last_name, password, **kwargs):
+    def create_superuser(self, id_number, email, password, **kwargs):
         user = self.create_user(
             id_number=id_number,
             email=email,
-            password=password,
-            first_name = first_name,
-            last_name = last_name
+            password=password
         )
 
         user.is_admin = True
@@ -55,8 +49,13 @@ class UserModel(AbstractUser):
     id_number = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=250)
     last_name = models.CharField(max_length=250)
-    email = models.EmailField()
-    userlevel = models.CharField(max_length=50, choices=userlevels, default='farmer')
+    email = models.EmailField(unique=True)
+    userlevel = models.CharField(
+        max_length=50, choices=userlevels, default='farmer', null=True)
+    is_admin = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = "id_number"
     REQUIRED_FILEDS = ['email', 'first_name', 'last_name' 'password']

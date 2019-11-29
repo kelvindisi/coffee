@@ -130,7 +130,9 @@ USE_TZ = True
 # custom configurations
 # FOR AUTHENTICATION
 AUTH_USER_MODEL = 'account.UserModel'
-AUTHENTICATION_BACKENDS = 'accounts.backends.UserAuthentication'
+# To rewrite this class to authenticate admins
+
+#AUTHENTICATION_BACKENDS = 'accounts.backends.UserAuthentication'
 
 # FOR FORM STYLING
 CRISPY_TEMPLATE_PACK = "bootstrap4"
