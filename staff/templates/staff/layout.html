@@ -46,8 +46,8 @@
                     <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown"> <i class="fas fa-user"></i>
                         Staff</a>
                     <div class="dropdown-menu">
-                        <a href="" class="dropdown-item">Add New</a>
-                        <a href="" class="dropdown-item">Manage</a>
+                        <a href="{% url 'factory_admin:add_accountant' %}" class="dropdown-item">Add New</a>
+                        <a href="{% url 'factory_admin:staff_list' %}" class="dropdown-item">Manage</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">

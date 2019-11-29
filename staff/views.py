@@ -42,8 +42,10 @@ class FactoryDeleteView(View):
         factory.delete()
         return redirect('staff:factories')
 
-
-# Super admin
+"""
+ SUPER ADMIN PREVILEDGES
+"""
+# Add new factory admin
 class CreateFactoryAdmin(View):
     userForm = custForm.CreateUserForm
     template_name = 'manager/add_factory_form.html'
@@ -69,7 +71,7 @@ class CreateFactoryAdmin(View):
             user.last_name = last_name
             user.userlevel = 'factory_admin'
             user.save()
-            
+
             fact = get_object_or_404(Factory, pk=factory_id)
 
             factory_staff = FactoryStaff(staff=user, factory=fact)
@@ -79,19 +81,27 @@ class CreateFactoryAdmin(View):
         return render(request, self.template_name, context={'form': form})
 
 
+#delete factory admin
 class DeleteFactoryStaff(View):
     def get(self, request, pk):
         staff = get_object_or_404(UserModel, pk=pk)
         return render(request, 'manager/confirm_factory_admin_delete.html', context={'staff': staff})
 
-
-    def post(self, request):
+    def post(self, request, pk):
         staff_id = request.POST.get('user_id')
-        staff_table = get_object_or_404(FactoryStaff, staff=staff_id)
-        staff_table.delete()
+        try:
+            staff_table = FactoryStaff.objects.get(staff=staff_id).first()
+            staff_table.delete()
+        except:
+            pass
+        staff = get_object_or_404(UserModel, pk=staff_id)
+        staff.userlevel = None
+        staff.save()
+
         return redirect('staff:factory_admins_list')
 
 
+# Factory Admin List
 class FactoryAdminList(generic.ListView):
     context_object_name = 'factory_admins'
     template_name = 'manager/factory_admin_list.html'
@@ -103,7 +113,10 @@ class FactoryAdminList(generic.ListView):
             return []
 
 
-# Factory Admin
+"""
+FACTORY ADMIN
+
+"""
 
 
 class NewProduct(View):
@@ -121,3 +134,74 @@ class NewProduct(View):
 class ProductList(generic.ListView):
     model = Product
     context_object_name = 'products'
+
+
+
+
+#add new factory staff
+class CreateFactoryStaff(View):
+    userForm = custForm.CreateUserForm
+    template_name = 'manager/factory_admin_form.html'
+
+    def get(self, request):
+        context = {
+            'form': self.userForm()
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        form = self.userForm(request.POST)
+        if form.is_valid():
+            id_number = form.cleaned_data.get('id_number')
+            email = form.cleaned_data.get('email')
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            password = form.cleaned_data.get('password')
+            factory_id = form.cleaned_data.get('factories')
+
+            user = UserModel.objects.create_user(id_number, email, password)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.userlevel = 'accounts'
+            user.save()
+
+            fact = get_object_or_404(Factory, pk=factory_id)
+
+            factory_staff = FactoryStaff(staff=user, factory=fact)
+            factory_staff.save()
+
+            return redirect('factory_admin:staff_list')
+        return render(request, self.template_name, context={'form': form})
+
+
+class FactoryStaffList(generic.ListView):
+    context_object_name = 'staffs'
+    template_name = 'manager/staff_list.html'
+
+    def get_queryset(self):
+        try:
+            return list(UserModel.objects.filter(userlevel='accounts'))
+        except:
+            return []
+
+
+#delete factory staff
+class DeleteStaffMember(View):
+    def get(self, request, pk):
+        staff = get_object_or_404(UserModel, pk=pk)
+        return render(request, 'manager/confirm_factory_admin_delete.html', context={'staff': staff})
+
+    def post(self, request, pk):
+        staff_id = request.POST.get('user_id')
+        try:
+            staff_table = FactoryStaff.objects.get(staff=staff_id).first()
+            staff_table.delete()
+        except:
+            pass
+        staff = get_object_or_404(UserModel, pk=staff_id)
+        staff.userlevel = None
+        staff.save()
+
+        return redirect('factory_admin:staff_list')
+
+

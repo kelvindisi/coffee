@@ -1,0 +1,31 @@
+{% extends 'staff/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="table-responsive container mt-4">
+    <table class="table table-striped dt_table">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Factory</th>
+                <th>Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for staff in staffs %}
+            <tr>
+                <td>{{staff.first_name}} {{staff.last_name}}</td>
+                <td>{{ staff.factorystaff.factory.name }}</td>
+                <td>
+                    <a href="" class="btn btn-sm btn-outline-primary"><i class="fas fa-trash"></i></a>
+                    <a href="" class="btn btn-sm btn-outline-danger"><i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block scripts %}
+{% include "staff/dataTables.html" %}
+{% endblock %}
