@@ -6,7 +6,7 @@ from farmer.models import Product
 from . import forms as custForm
 from account.models import UserModel
 from django.http import HttpResponse
-
+from django.contrib import messages
 
 def index(request):
     return render(request, 'staff/index.html')
@@ -76,7 +76,7 @@ class FactoryDeleteView(View):
 # Add new factory admin
 class CreateFactoryAdmin(View):
     userForm = custForm.CreateUserForm
-    template_name = 'manager/add_factory_form.html'
+    template_name = 'manager/factory_admin_form.html'
 
     def get(self, request):
         context = {
@@ -125,9 +125,45 @@ class DeleteFactoryStaff(View):
         staff = get_object_or_404(UserModel, pk=staff_id)
         staff.userlevel = None
         staff.save()
-
+        messages.info(request, 'Staff access removed successfully')
         return redirect('staff:factory_admins_list')
 
+
+class EditFactoryStaff(View):
+    template_name = 'manager/fact_admin_edit_form.html'
+    form = custForm.UpdateUserForm
+
+    def get(self, request, pk):
+        staff = get_object_or_404(UserModel, pk=pk)
+        staff.factories = staff.factorystaff.factory.pk
+
+        context = {
+            'form': self.form(instance=staff)
+        }
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, pk):
+        user = get_object_or_404(UserModel, pk=pk)
+        user.factories = user.factorystaff.factory.pk
+
+        form = self.form(request.POST, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.id_number
+            user.save()
+
+            factory = get_object_or_404(Factory, pk=request.POST.get('factories'))
+            factory_staff = get_object_or_404(FactoryStaff, staff=user)
+            factory_staff.factory = factory
+            factory_staff.save()
+
+            messages.success(request, 'Staff details updated successfully')
+            return redirect('staff:factory_admins_list')
+
+        return render(request, self.template_name, context={'form':form})
+
+            
 
 # Factory Admin List
 class FactoryAdminList(generic.ListView):

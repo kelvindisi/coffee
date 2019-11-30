@@ -18,6 +18,21 @@ class CreateUserForm(forms.ModelForm):
                   'first_name', 'last_name', 'password']
 
 
+class UpdateUserForm(forms.ModelForm):
+    facts = Factory.objects.all()
+    fact_choices = []
+
+    for factory in facts:
+        fact_choices.append((factory.id, factory.name))
+
+    factories = forms.CharField(widget=forms.Select(choices=fact_choices))
+
+    class Meta:
+        model = UserModel
+        fields = ['factories', 'id_number', 'email',
+                  'first_name', 'last_name']
+
+
 class CreateProductForm(forms.ModelForm):
     class Meta:
         model = Product
@@ -31,7 +46,7 @@ class FactoryForm(forms.ModelForm):
 
 
 class CreateFactoryPriceForm(forms.ModelForm):
-    price = forms.IntegerField(label="Buying price", widget=forms.NumberInput(
+    price = forms.IntegerField(label="Buying price (Per Kg)", widget=forms.NumberInput(
         attrs={
             "min": 0
         }

@@ -1,0 +1,12 @@
+{% extends 'staff/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="addForm">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-outline-success">Update <i class="fas fa-edit"></i></button>
+    </form>
+</div>
+{% endblock %}

@@ -22,10 +22,16 @@ class FactoryPrice(models.Model):
     price = models.IntegerField(default=0)
     date = models.DateField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.factory.name} - {self.price}"
+
 
 class FactoryStaff(models.Model):
     staff = models.OneToOneField(UserModel, on_delete=models.CASCADE)
     factory = models.ForeignKey(Factory, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"STAFF ID: {self.staff.username} -IN- {self.factory.name}"
 
 
 class Account(models.Model):

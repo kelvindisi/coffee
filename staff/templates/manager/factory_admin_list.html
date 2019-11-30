@@ -18,7 +18,7 @@
                 <td>{{ admin.factorystaff.factory.name }}</td>
                 <td>
                     <a href="{% url 'staff:delete_factory_admin' admin.id %}" class="btn btn-sm btn-outline-primary"><i class="fas fa-trash"></i></a>
-                    <a href="" class="btn btn-sm btn-outline-danger"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'staff:edit_factory_admin' admin.id %}" class="btn btn-sm btn-outline-danger"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
             {% endfor %}

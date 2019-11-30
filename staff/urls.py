@@ -17,7 +17,8 @@ staff_patterns = ([
     path('station_admins/', views.FactoryAdminList.as_view(),
          name="factory_admins_list"),
     path('delete_factory_admin/<int:pk>/', views.DeleteFactoryStaff.as_view(),
-         name="delete_factory_admin")
+         name="delete_factory_admin"),
+     path('edit_factory_admin/<int:pk>/', views.EditFactoryStaff.as_view(), name="edit_factory_admin")
 ], 'staff')
 
 # factory admin routes
