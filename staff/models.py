@@ -17,6 +17,12 @@ class Factory(models.Model):
         return f"{self.name} - {self.email}"
 
 
+class FactoryPrice(models.Model):
+    factory = models.ForeignKey(Factory, on_delete=models.CASCADE)
+    price = models.IntegerField(default=0)
+    date = models.DateField(auto_now_add=True)
+
+
 class FactoryStaff(models.Model):
     staff = models.OneToOneField(UserModel, on_delete=models.CASCADE)
     factory = models.ForeignKey(Factory, on_delete=models.CASCADE)

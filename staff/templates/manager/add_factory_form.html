@@ -5,7 +5,9 @@
   <form action="" method="post">
     <fieldset>
       <legend>Add Factory</legend>
-      {% csrf_token %} {{ form|crispy }}
+      {% csrf_token %} 
+      {{ factory|crispy }}
+      {{ factory_price|crispy }}
       <button class="btn btn-outline-primary">
         Add <i class="fas fa-plus"></i>
       </button>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
 from django.contrib.auth.models import User
 from django.views import generic, View
-from .models import Factory, FactoryStaff
+from .models import Factory, FactoryStaff, FactoryPrice
 from farmer.models import Product
 from . import forms as custForm
 from account.models import UserModel
@@ -12,12 +12,40 @@ def index(request):
     return render(request, 'staff/index.html')
 
 
-class CreateFactoryView(generic.CreateView):
-    model = Factory
+# create new factory
+class CreateFactoryView(View):
+    factoryForm = custForm.FactoryForm
+    factoryPrice = custForm.CreateFactoryPriceForm
     template_name = 'manager/add_factory_form.html'
-    fields = ['name', 'email', 'phone_number', 'address']
+
+    def get(self, request):
+        context={
+            'factory_price': self.factoryPrice(),
+            'factory': self.factoryForm(),
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *args, **kwargs):
+        factory = self.factoryForm(request.POST)
+        factory_price = self.factoryPrice(request.POST)
+        
+        context = {
+            'factory_price': factory_price,
+            'factory': factory
+        }
+
+        if factory.is_valid() and factory_price.is_valid():
+            fact = factory.save()
+            price = factory_price.save(commit=False)
+            price.factory_id = fact.id
+            price.save()
+
+            return redirect('staff:factories')
+
+        return render(request, self.template_name, context)
 
 
+# List of all factories
 class FactoryListView(generic.ListView):
     template_name = 'manager/factory_list.html'
     model = Factory
