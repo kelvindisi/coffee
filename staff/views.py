@@ -198,6 +198,19 @@ class RejectProduct(View):
         return redirect('factory_admin:products_schedule')
 
 
+class ReRejectProduct(View):
+    def get(self, request):
+        return redirect('factory_admin:products_schedule')
+    
+    def post(self, request):
+        factory_id = request.user.factorystaff.factory.id
+        product = get_object_or_404(Product, factory=factory_id, scheduled='1', pk=request.POST.get('product_id'))
+        product.scheduled = '0'
+        product.date_scheduled = None
+        product.save()
+        return redirect('factory_admin:scheduled')
+
+
 #posted product to schedule collection
 class NewProduct(generic.ListView):
     template_name = 'factory_admin/collection_list.html'
@@ -248,6 +261,38 @@ class ScheduledProduct(generic.ListView):
         ProductFilter = list(Product.objects.filter(scheduled='1', collected='0', factory=factory_id))
 
         return ProductFilter
+
+
+class CollectProductView(View):
+    template_name = 'factory_admin/collect_product_form.html'
+    form = custForm.UpdateProductQuantity
+
+    def get(self, request, **kwargs):
+        product = Product.objects.filter(
+            pk=kwargs.get('pk'),
+            collected='0',
+            scheduled='1'
+        ).first()
+        if product:
+            form = self.form()
+            return render(request, self.template_name, context={'product': product, 'form': form})
+        return redirect('factory_admin:scheduled')
+
+    def post(self, request, **kwargs):
+        product = Product.objects.filter(
+            pk=kwargs.get('pk'),
+            collected='0',
+            scheduled='1'
+        ).first()
+        form = self.form(request.POST)
+        if form.is_valid() and product:
+            product.collected = '1'
+            product.quantity = form.cleaned_data.get('quantity')
+            product.save()
+            messages.success(request, 'Product details saved successfully')
+            return redirect('factory_admin:scheduled')
+        messages.info(request, 'Sorry... Product details failed to save')
+        return render(request, self.template_name, context={'product': product, 'form': form})
 
 
 

@@ -21,7 +21,7 @@
                 <td>{{ product.date_scheduled }}</td>
                 <td>{{ product.approximate_quantity }}</td>
                 <td>
-                    <form method="POST" action="{% url 'factory_admin:product_reject' %}"
+                    <form method="POST" action="{% url 'factory_admin:re_product_reject' %}"
                         class="form-inline float-left mr-2">
                         {% csrf_token %}
                         <input type="hidden" name="product_id" value="{{product.id}}">
@@ -29,7 +29,9 @@
                             <i class="fas fa-trash"></i>
                         </button>
                     </form>
-                    <a href="" class="btn btn-sm btn-outline-primary"><i class="fas fa-check"></i></a>
+                    <a href="{% url 'factory_admin:product_collect' product.id %}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-check"></i>
+                    </a>
                 </td>
             </tr>
             {% endfor %}

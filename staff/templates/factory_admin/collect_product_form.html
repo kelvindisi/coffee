@@ -1,0 +1,30 @@
+{% extends 'staff/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+
+<div class="card container mt-4">
+    <div class="card-body">
+        <div class="card-title">
+            <p>Farmer: {{product.farmer.first_name }} {{product.farmer.last_name }}</p>
+            <hr>
+        </div>
+        <div class="card-text">
+            <p><strong>Date Posted:</strong> {{product.date}} </p>
+            <p><strong>Date Scheduled:</strong> {{product.date_scheduled}}</p>
+            <p><strong>Approximate Qty:</strong> {{product.approximate_quantity}}</p>
+            <p><strong>Farmer ID:</strong> {{product.farmer.id_number}}</p>
+
+            <div style="max-width: 550px;">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button class="btn btn-outline-success">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+100000 * (( 0.0392 * (1 + 0.0392) ^ 30) / (((1 + 0.0392) ^ 30)-1))

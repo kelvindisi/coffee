@@ -37,3 +37,9 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.farmer.username} - {self.quantity}Kgs"
+
+
+class Payment(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    total_amount = models.IntegerField(default=0)
+    paid_amount = models.IntegerField(default=0)
