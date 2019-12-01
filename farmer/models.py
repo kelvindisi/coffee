@@ -15,11 +15,19 @@ class NotificationMessage(models.Model):
 
 
 class Product(models.Model):
+    scheduler = [
+        ('0', 'No'),
+        ('1', 'Yes'),
+        ('2', 'Pending')
+    ]
     farmer = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    approximate_quantity = models.IntegerField(default=0)
+    factory = models.ForeignKey(Factory, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0, verbose_name="coffee")
     price_per_kg = models.IntegerField(default=0, verbose_name="price")
-    date_delivered = models.DateField()
-    factory = models.OneToOneField(Factory, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    scheduled = models.CharField(max_length=2, choices=scheduler, default='2')
+    date_scheduled = models.DateField(null=True)
 
     def __str__(self):
         return f"{self.farmer.username} - {self.quantity}Kgs"

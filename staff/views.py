@@ -70,8 +70,11 @@ class FactoryDeleteView(View):
         factory.delete()
         return redirect('staff:factories')
 
+
 """
- SUPER ADMIN PREVILEDGES
+****************************************************************
+            SUPER ADMIN PREVILEDGES
+****************************************************************
 """
 # Add new factory admin
 class CreateFactoryAdmin(View):
@@ -178,8 +181,9 @@ class FactoryAdminList(generic.ListView):
 
 
 """
-FACTORY ADMIN
-
+****************************************************************
+                        FACTORY ADMIN
+****************************************************************
 """
 
 

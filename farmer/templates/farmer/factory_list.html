@@ -1,0 +1,26 @@
+{% extends 'farmer/layout.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="mt-4 card-deck">
+        {% for factory_price in factories%}
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h4>{{ factory_price.factory.name }}</h4>
+                    <hr>
+                </div>
+                <div class="card-text">
+                    <div class="columns">
+                        <p><strong>Location: </strong> {{ factory_price.factory.address }}</p>
+                        <p><strong>Contact: </strong> {{ factory_price.factory.phone_number }} </p>
+                        <p><strong>Email: </strong> {{ factory_price.factory.email }}</p>
+                        <p><strong>Buying Price: </strong> Ksh. {{ factory_price.price }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

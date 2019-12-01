@@ -1,0 +1,15 @@
+{% extends 'farmer/layout.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="addForm mt-5">
+    <form action="" method="POST" class="mt-3">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="form-group">
+            <button class="btn btn-outline-primary">Send Request</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -16,12 +16,24 @@
                 </tr>
             </thead>
             <tbody>
-
+                {% for price in factories %}
+                <tr>
+                    <td>{{ price.factory.name }}</td>
+                    <td>
+                        {% if price.previous_price %}
+                        {{'Ksh.'}} {{ price.previous_price }}
+                        {% else %}
+                        --
+                        {% endif %}
+                    </td>
+                    <td>Ksh. {{ price.price }}</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
 {% endblock %}
 {% block scripts %}
-    {% include 'staff/dataTables.html' %}
+{% include 'staff/dataTables.html' %}
 {% endblock %}

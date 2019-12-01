@@ -1,0 +1,46 @@
+{% extends 'farmer/layout.html' %}
+
+{% block body %}
+<div class="container mt-3">
+    <h4>Top Price Factories</h4>
+    <div class="table-response">
+        <table class="table table-striped dt_table">
+            <thead>
+                <tr>
+                    <th>Factory</th>
+                    <th>Send Date</th>
+                    <th>Status</th>
+                    <th>Scheduled Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in object_list %}
+                <tr>
+                    <td>{{item.factory.name}}</td>
+                    <td>{{item.date}}</td>
+                    <td>
+                        {% if item.scheduled == '2' %}
+                        <span class="text-primary">Not Reviewed</span>
+                        {% elif item.scheduled == '0' %}
+                        <span class="text-danger">Not Approved</span>
+                        {% elif item.scheduled == '1' %}
+                        <span class="text-success">Scheduled</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.scheduled == '1' %}
+                        {{item.date_scheduled}}
+                        {% else %}
+                        --
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{% include 'staff/dataTables.html' %}
+{% endblock %}

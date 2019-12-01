@@ -29,8 +29,12 @@
                     <a href="{% url 'farmer:factories' %}" class="nav-link">Factories</a>
                 </li>
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a href="" class="nav-link">My Products</a>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">My Products</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'farmer:product' %}" class="dropdown-item">New</a>
+                        <a href="{% url 'farmer:schedules' %}" class="dropdown-item">Schedules</a>
+                    </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Payments Details</a>

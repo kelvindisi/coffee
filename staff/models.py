@@ -20,6 +20,7 @@ class Factory(models.Model):
 class FactoryPrice(models.Model):
     factory = models.ForeignKey(Factory, on_delete=models.CASCADE)
     price = models.IntegerField(default=0)
+    previous_price = models.IntegerField(default=None, null=True)
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):

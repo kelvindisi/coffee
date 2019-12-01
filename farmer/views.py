@@ -1,8 +1,45 @@
-from django.shortcuts import render
-from django.views import generic
+from django.shortcuts import render, get_list_or_404, redirect
+from django.views import generic, View
+from staff.models import FactoryPrice, Factory
+from .models import Product
+from . import forms as custForm
+from django.contrib import messages
 
-def index(request):
-    return render(request, 'farmer/home.html')
 
-def factories(request):
-    return render(request, 'farmer/factories.html')
+class HomePageView(View):
+    def get(self, request):
+        top_factory = FactoryPrice.objects.all()[:10]
+        context = {
+            "factories": top_factory
+        }
+
+        return render(request, 'farmer/home.html', context)
+
+
+class FactoryList(generic.ListView):
+    model = FactoryPrice
+    context_object_name = 'factories'
+    template_name = 'farmer/factory_list.html'
+
+
+class CreateCollectionScheduler(View):
+    form = custForm.CreateProduceForm
+    template_name = 'farmer/product_create_form.html'
+
+    def get(self, request):
+        return render(request, self.template_name, context={'form': self.form()})
+
+    def post(self, request):
+        form = self.form(request.POST)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.farmer = request.user
+            product.save()
+            messages.success(
+                request, 'Your request was send successfully wait for processing')
+            return redirect('farmer:schedules')
+        return render(request, self.template_name, context={'form': form})
+
+
+class ScheduleList(generic.ListView):
+    model = Product
