@@ -1,0 +1,30 @@
+{% extends 'staff/layout.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-block">
+            <div class="card-body">
+                <div class="card-title">
+                    <p>Farmer: {{product.farmer.first_name}} {{product.farmer.last_name}} </p>
+                    <hr>
+                </div>
+                <p><strong>Date Posted: </strong> {{product.date}}</p>
+                <p><Strong>Approximate Qty(Kgs): </Strong> {{product.approximate_quantity}}</p>
+                <form action="" method="POST" style="max-width: 550px">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="date">Schedule Date</label>
+                        <input type="date" name="date_scheduled" id="date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

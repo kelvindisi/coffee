@@ -20,6 +20,11 @@ class Product(models.Model):
         ('1', 'Yes'),
         ('2', 'Pending')
     ]
+    collected = [
+        ('0', 'No'),
+        ('1', 'Yes')
+    ]
+
     farmer = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     approximate_quantity = models.IntegerField(default=0)
     factory = models.ForeignKey(Factory, on_delete=models.CASCADE)
@@ -28,6 +33,7 @@ class Product(models.Model):
     date = models.DateField(auto_now_add=True)
     scheduled = models.CharField(max_length=2, choices=scheduler, default='2')
     date_scheduled = models.DateField(null=True)
+    collected = models.CharField(max_length=2, choices=collected, default='0')
 
     def __str__(self):
         return f"{self.farmer.username} - {self.quantity}Kgs"

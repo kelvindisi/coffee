@@ -8,7 +8,7 @@
             <tr>
                 <th>ID NO</th>
                 <th>Farmer</th>
-                <th>Date</th>
+                <th>Scheduled Date</th>
                 <th>Approx Qty(Kg's)</th>
                 <th>Manage</th>
             </tr>
@@ -18,7 +18,7 @@
             <tr>
                 <td>{{product.farmer.id_number}}</td>
                 <td>{{product.farmer.first_name}} {{product.farmer.last_name}}</td>
-                <td>{{ product.date }}</td>
+                <td>{{ product.date_scheduled }}</td>
                 <td>{{ product.approximate_quantity }}</td>
                 <td>
                     <form method="POST" action="{% url 'factory_admin:product_reject' %}"
@@ -29,7 +29,7 @@
                             <i class="fas fa-trash"></i>
                         </button>
                     </form>
-                    <a href="{% url 'factory_admin:schedule_product' product.id %}" class="btn btn-sm btn-outline-primary"><i class="fas fa-check"></i></a>
+                    <a href="" class="btn btn-sm btn-outline-primary"><i class="fas fa-check"></i></a>
                 </td>
             </tr>
             {% endfor %}

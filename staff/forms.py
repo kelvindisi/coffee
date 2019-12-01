@@ -39,6 +39,13 @@ class CreateProductForm(forms.ModelForm):
         fields = ['quantity', 'price_per_kg', 'factory']
 
 
+class UpdateProductScheduleForm(forms.ModelForm):
+    date_scheduled = forms.DateTimeField()
+    class Meta:
+        model = Product
+        fields = ['date_scheduled']
+
+
 class FactoryForm(forms.ModelForm):
     class Meta:
         model = Factory

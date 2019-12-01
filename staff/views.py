@@ -186,23 +186,68 @@ class FactoryAdminList(generic.ListView):
 ****************************************************************
 """
 
-
-class NewProduct(View):
-    template_name = 'factory_admin/add_farmer_produce.html'
-
+class RejectProduct(View):
     def get(self, request):
-        productForm = custForm.CreateProductForm()
-        context = {
-            'form': productForm,
-            'searchForm': custForm.SearchUserForm()
-        }
-        return render(request, self.template_name, context)
+        return redirect('factory_admin:products_schedule')
+    
+    def post(self, request):
+        factory_id = request.user.factorystaff.factory.id
+        product = get_object_or_404(Product, factory=factory_id, scheduled='2', pk=request.POST.get('product_id'))
+        product.scheduled = '0'
+        product.save()
+        return redirect('factory_admin:products_schedule')
 
 
-class ProductList(generic.ListView):
+#posted product to schedule collection
+class NewProduct(generic.ListView):
+    template_name = 'factory_admin/collection_list.html'
     model = Product
-    context_object_name = 'products'
 
+    def get_queryset(self):
+        factory_id = self.request.user.factorystaff.factory.id
+
+        return list(Product.objects.filter(factory=factory_id, scheduled='2'))
+
+
+class AddScheduleDate(View):
+    template_name = 'factory_admin/product_update.html'
+    form = custForm.UpdateProductScheduleForm
+
+    def get(self, request, **kwargs):
+        factory_id = self.request.user.factorystaff.factory.id
+        product_id = kwargs.get('pk')
+        product = Product.objects.filter(factory=factory_id, scheduled='2', pk=product_id).first()
+        context = {
+            'product': product
+        }
+        return render(request, self.template_name, context=context)
+    
+    def post(self, request, **kwargs):
+        factory_id = self.request.user.factorystaff.factory.id        
+        product_id = kwargs.get('pk')
+
+        product = Product.objects.filter(factory=factory_id, scheduled='2', pk=product_id).first()
+
+        form = self.form(request.POST)
+        if form.is_valid() and product:
+            product.scheduled = '1'
+            product.date_scheduled = form.cleaned_data.get('date_scheduled')
+            
+            product.save()
+            return redirect("factory_admin:scheduled")
+        return render(request, self.template_name, context={"product": product})
+
+
+
+class ScheduledProduct(generic.ListView):
+    template_name = 'factory_admin/scheduled_list.html'
+    model = Product
+
+    def get_queryset(self):
+        factory_id = self.request.user.factorystaff.factory.id
+        ProductFilter = list(Product.objects.filter(scheduled='1', collected='0', factory=factory_id))
+
+        return ProductFilter
 
 
 

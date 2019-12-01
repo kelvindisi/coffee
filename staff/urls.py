@@ -23,8 +23,10 @@ staff_patterns = ([
 
 # factory admin routes
 factory_admin = ([
-    path('product', views.NewProduct.as_view(), name="add_product"),
-    path('products', views.ProductList.as_view(), name="products"),
+    path('product', views.NewProduct.as_view(), name="products_schedule"),
+    path('product_reject/', views.RejectProduct.as_view(), name="product_reject"),
+    path('schedule_date/<int:pk>/', views.AddScheduleDate.as_view(), name="schedule_product"),
+    path('products_scheduled/', views.ScheduledProduct.as_view(), name="scheduled"),
     path('accountant', views.CreateFactoryStaff.as_view(), name="add_accountant"),
     path('staff_list', views.FactoryStaffList.as_view(), name="staff_list"),
     
