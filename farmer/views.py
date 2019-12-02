@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_list_or_404, redirect
+from django.shortcuts import render, get_list_or_404, redirect, get_object_or_404
 from django.views import generic, View
 from staff.models import FactoryPrice, Factory
 from .models import Product
@@ -34,6 +34,10 @@ class CreateCollectionScheduler(View):
         if form.is_valid():
             product = form.save(commit=False)
             product.farmer = request.user
+            factory = product.factory
+            factory_price = get_object_or_404(
+                FactoryPrice, factory_id=factory.pk)
+            product.price_per_kg = factory_price.price
             product.save()
             messages.success(
                 request, 'Your request was send successfully wait for processing')
