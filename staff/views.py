@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 from django.contrib.auth.models import User
 from django.views import generic, View
 from .models import Factory, FactoryStaff, FactoryPrice
-from farmer.models import Product
+from farmer.models import Product, Payment
 from . import forms as custForm
 from account.models import UserModel
 from django.http import HttpResponse
@@ -289,6 +289,10 @@ class CollectProductView(View):
             product.collected = '1'
             product.quantity = form.cleaned_data.get('quantity')
             product.save()
+
+            payment = Payment(product=product, total_amount=(product.quantity * product.price_per_kg))
+            payment.save()
+
             messages.success(request, 'Product details saved successfully')
             return redirect('factory_admin:scheduled')
         messages.info(request, 'Sorry... Product details failed to save')

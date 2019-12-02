@@ -1,0 +1,32 @@
+{% extends 'farmer/layout.html' %}
+
+{% block body %}
+<div class="container mt-3">
+    <h4>Top Price Factories</h4>
+    <div class="table-response">
+        <table class="table table-striped dt_table">
+            <thead>
+                <tr>
+                    <th>Factory</th>
+                    <th>Total Amount</th>
+                    <th>Paid Amount</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td> {{payment.product.id}} </td>
+                    <td> {{payment.total_amount}} </td>
+                    <td> {{payment.paid_amount}} </td>
+                    <td> {{payment.balance}} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{% include 'staff/dataTables.html' %}
+{% endblock %}

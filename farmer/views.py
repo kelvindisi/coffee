@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_list_or_404, redirect, get_object_or_404
 from django.views import generic, View
 from staff.models import FactoryPrice, Factory
-from .models import Product
+from .models import Product, Payment
 from . import forms as custForm
 from django.contrib import messages
 
@@ -47,3 +47,21 @@ class CreateCollectionScheduler(View):
 
 class ScheduleList(generic.ListView):
     model = Product
+
+
+class PendingPayment(View):
+    template_name = 'farmer/payment_list.html'
+
+    def get(self, request):
+        pending = []
+        for payment in Payment.objects.all():
+            if payment.product.farmer == request.user:
+                pend = payment.total_amount - payment.paid_amount
+                if pend > 0:
+                    payment.balance = pend
+                    pending.append(payment)
+        return render(request, self.template_name, context={'payments': pending})
+
+
+class PaymentHistory(generic.ListView):
+    model = Payment
