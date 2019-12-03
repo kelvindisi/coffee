@@ -39,9 +39,9 @@
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Payments Details</a>
                     <div class="dropdown-menu">
-                        <a href="" class="dropdown-item">Pending Payments</a>
+                        <a href="{% url 'farmer:pending_payment' %}" class="dropdown-item">Pending Payments</a>
                         <a href="" class="dropdown-item">Account Details</a>
-                        <a href="" class="dropdown-item">History</a>
+                        <a href="{% url 'farmer:payment_history' %}" class="dropdown-item">History</a>
                     </div>
                 </li>
                 {% endif %}

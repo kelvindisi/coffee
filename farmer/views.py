@@ -65,3 +65,4 @@ class PendingPayment(View):
 
 class PaymentHistory(generic.ListView):
     model = Payment
+    # make sure it return for the logged user

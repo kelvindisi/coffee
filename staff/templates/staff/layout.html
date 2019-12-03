@@ -55,6 +55,7 @@
                     <div class="dropdown-menu">
                         <a href="{% url 'factory_admin:products_schedule' %}" class="dropdown-item">Pending Review</a>
                         <a href="{% url 'factory_admin:scheduled' %}" class="dropdown-item">Scheduled List</a>
+                        <a href="{% url 'factory_admin:collected' %}" class="dropdown-item">Collected Products</a>
                     </div>
                 </li>
                 <!--End of Factory admin-->
@@ -63,10 +64,11 @@
                 <li class="nav-item dropdown">
                     <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Accounts</a>
                     <div class="dropdown-menu">
-                        <a href="" class="dropdown-item">Customer Accounts</a>
-                        <a href="" class="dropdown-item">Pending Payment</a>
+                        <a href="{% url 'accountant:account_details' %}" class="dropdown-item">Customer Accounts</a>
+                        <a href="{% url 'accountant:balances' %}" class="dropdown-item">Pending Payment</a>
                     </div>
                 </li>
+                <!--TO WORK ONCE THE APPLICATION IS FULLY WORKING
                 <div class="nav-item dropdown">
                     <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown"> <i class="fas fa-book"></i>
                         Reports</a>
@@ -76,13 +78,16 @@
                         <a href="" class="dropdown-item">Correction History</a>
                     </div>
                 </div>
+                -->
                 <!--End of factory Accountant-->
 
             </ul>
             <ul class="navbar-nav ml-auto">
+                <!-- TO SEND ACCOUNT NOTIFICATIONS
                 <li class="nav-item">
                     <a href="" class="nav-link"><i class="fas fa-bell"></i></a>
                 </li>
+                -->
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i></a>
                     <div class="dropdown-menu">

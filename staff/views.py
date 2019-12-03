@@ -222,6 +222,16 @@ class NewProduct(generic.ListView):
         return list(Product.objects.filter(factory=factory_id, scheduled='2'))
 
 
+class CollectedProduct(generic.ListView):
+    template_name = 'factory_admin/collected_list.html'
+    model = Product
+
+    def get_queryset(self):
+        factory_id = self.request.user.factorystaff.factory.id
+
+        return list(Product.objects.filter(factory=factory_id, scheduled='1', collected='1'))
+
+
 class AddScheduleDate(View):
     template_name = 'factory_admin/product_update.html'
     form = custForm.UpdateProductScheduleForm
@@ -367,3 +377,36 @@ class DeleteStaffMember(View):
         return redirect('factory_admin:staff_list')
 
 
+class AccountBalances(View):
+    template_name = 'accountant/customer_account_details.html'
+
+    def get(self, request):
+        sum_pay = set()
+        accounts = list()
+
+        factory_id = request.user.factorystaff.factory.id
+        products = Product.objects.filter(factory=get_object_or_404(Factory, pk=factory_id), collected='1')
+        for product in products:
+            pass
+        
+        return render(request, self.template_name, context={"accounts": accounts})
+
+
+class PendingBalances(View):
+    template_name = 'accountant/pending_payment_list.html'
+
+    def get(self, request):
+        accounts = list()
+        factory_id = request.user.factorystaff.factory.id
+        products = Product.objects.filter(factory=get_object_or_404(Factory, pk=factory_id))
+        for product in products:
+            try:
+                payment = Payment.objects.get(product=product)
+                balance = payment.total_amount - payment.paid_amount
+
+                payment.balance = balance
+                if balance > 0:
+                    accounts.append(payment)
+            except:
+                pass
+        return render(request, self.template_name, context={"accounts": accounts})

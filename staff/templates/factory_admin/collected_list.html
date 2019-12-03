@@ -8,15 +8,19 @@
             <tr>
                 <th>ID NO</th>
                 <th>Farmer</th>
-                <th>Balance</th>
+                <th>Date</th>
+                <th>Approx Qty(Kg's)</th>
+                <th>Actual Qty(Kg's)</th>
             </tr>
         </thead>
         <tbody>
-            {% for payment in accounts %}
+            {% for product in object_list %}
             <tr>
-                <td>{{ payment.product.farmer.id_number }}</td>
-                <td>{{ payment.product.farmer.first_name }} {{ payment.product.farmer.last_name }}</td>
-                <td>{{ payment.balance }}</td>
+                <td>{{product.farmer.id_number}}</td>
+                <td>{{product.farmer.first_name}} {{product.farmer.last_name}}</td>
+                <td>{{ product.date }}</td>
+                <td>{{ product.approximate_quantity }}</td>
+                <td>{{ product.quantity }}</td>
             </tr>
             {% endfor %}
         </tbody>
