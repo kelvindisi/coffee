@@ -3,7 +3,7 @@ from . import views
 
 # super admin routes
 staff_patterns = ([
-    path('', views.index, name="index"),
+    path('', views.HomeView.as_view(), name="index"),
     path('factory/add/', views.CreateFactoryView.as_view(),
          name="add_factory"),
     path('factories/', views.FactoryListView.as_view(),
@@ -38,7 +38,8 @@ factory_admin = ([
          views.CollectProductView.as_view(), name="product_collect"),
     path('accountant', views.CreateFactoryStaff.as_view(), name="add_accountant"),
     path('staff_list', views.FactoryStaffList.as_view(), name="staff_list"),
-    path('staff/<int:pk>/delete', views.DeleteStaffMember.as_view(), name="delete_staff"),
+    path('staff/<int:pk>/delete',
+         views.DeleteStaffMember.as_view(), name="delete_staff"),
 
 ], 'factory_admin')
 

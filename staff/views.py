@@ -8,17 +8,32 @@ from account.models import UserModel
 from django.http import HttpResponse
 from django.contrib import messages
 from account.forms import UpdateUserForm, ProfileForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-def index(request):
-    return render(request, 'staff/index.html')
+class HomeView(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+
+    def test_func(self):
+        userlevel = self.request.user.userlevel
+
+        if userlevel == 'accountant' or userlevel == 'factory_admin' or userlevel == 'manager':
+            return True
+
+    def get(self, request):
+        return render(request, 'staff/index.html')
 
 
 # create new factory
-class CreateFactoryView(View):
+class CreateFactoryView(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+
     factoryForm = custForm.FactoryForm
     factoryPrice = custForm.CreateFactoryPriceForm
     template_name = 'manager/add_factory_form.html'
 
+    def test_func(self):
+        return self.request.user.userlevel == "manager"
+    
     def get(self, request):
         context={
             'factory_price': self.factoryPrice(),
@@ -47,21 +62,36 @@ class CreateFactoryView(View):
 
 
 # List of all factories
-class FactoryListView(generic.ListView):
+class FactoryListView(LoginRequiredMixin, UserPassesTestMixin,generic.ListView):
+    login_url = "/account/"
+    
     template_name = 'manager/factory_list.html'
     model = Factory
     context_object_name = 'factories'
 
+    def test_func(self):
+        return self.request.user.userlevel == "manager"
 
-class FactoryUpdateView(generic.UpdateView):
+
+class FactoryUpdateView(LoginRequiredMixin, UserPassesTestMixin,generic.UpdateView):
+    login_url = "/account/"
+    
     template_name = 'manager/factory_update_form.html'
     fields = ['name', 'email', 'phone_number', 'address']
     model = Factory
 
+    def test_func(self):
+        return self.request.user.userlevel == "manager"
 
-class FactoryDeleteView(View):
+
+class FactoryDeleteView(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
     template_name = 'manager/confirm_factory_delete.html'
 
+    def test_func(self):
+        return self.request.user.userlevel == "manager"
+    
     def get(self, request, id):
         factory = get_object_or_404(Factory, pk=id)
         return render(request, self.template_name, context={'factory': factory})
@@ -78,9 +108,14 @@ class FactoryDeleteView(View):
 ****************************************************************
 """
 # Add new factory admin
-class CreateFactoryAdmin(View):
+class CreateFactoryAdmin(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
     userForm = custForm.CreateUserForm
     template_name = 'manager/factory_admin_form.html'
+
+    def test_func(self):
+        return self.request.user.userlevel == "manager"
 
     def get(self, request):
         context = {
@@ -114,7 +149,12 @@ class CreateFactoryAdmin(View):
 
 
 #delete factory admin
-class DeleteFactoryStaff(View):
+class DeleteFactoryStaff(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
+    def test_func(self):
+        return self.request.user.userlevel == "manager"
+
     def get(self, request, pk):
         staff = get_object_or_404(UserModel, pk=pk)
         return render(request, 'manager/confirm_factory_admin_delete.html', context={'staff': staff})
@@ -133,9 +173,14 @@ class DeleteFactoryStaff(View):
         return redirect('staff:factory_admins_list')
 
 
-class EditFactoryStaff(View):
+class EditFactoryStaff(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
     template_name = 'manager/fact_admin_edit_form.html'
     form = custForm.UpdateUserForm
+
+    def test_func(self):
+        return self.request.user.userlevel == "manager"
 
     def get(self, request, pk):
         staff = get_object_or_404(UserModel, pk=pk)
@@ -170,9 +215,14 @@ class EditFactoryStaff(View):
             
 
 # Factory Admin List
-class FactoryAdminList(generic.ListView):
+class FactoryAdminList(LoginRequiredMixin, UserPassesTestMixin,generic.ListView):
+    login_url = "/account/"
+    
     context_object_name = 'factory_admins'
     template_name = 'manager/factory_admin_list.html'
+
+    def test_func(self):
+        return self.request.user.userlevel == "manager"
 
     def get_queryset(self):
         try:
@@ -187,7 +237,12 @@ class FactoryAdminList(generic.ListView):
 ****************************************************************
 """
 
-class RejectProduct(View):
+class RejectProduct(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
+    def test_func(self):
+        return self.request.user.userlevel == "factory_admin"
+    
     def get(self, request):
         return redirect('factory_admin:products_schedule')
     
@@ -199,7 +254,12 @@ class RejectProduct(View):
         return redirect('factory_admin:products_schedule')
 
 
-class ReRejectProduct(View):
+class ReRejectProduct(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
+    def test_func(self):
+        return self.request.user.userlevel == "factory_admin"
+    
     def get(self, request):
         return redirect('factory_admin:products_schedule')
     
@@ -213,9 +273,14 @@ class ReRejectProduct(View):
 
 
 #posted product to schedule collection
-class NewProduct(generic.ListView):
+class NewProduct(LoginRequiredMixin, UserPassesTestMixin,generic.ListView):
+    login_url = "/account/"
+    
     template_name = 'factory_admin/collection_list.html'
     model = Product
+
+    def test_func(self):
+        return self.request.user.userlevel == "factory_admin"
 
     def get_queryset(self):
         factory_id = self.request.user.factorystaff.factory.id
@@ -223,9 +288,14 @@ class NewProduct(generic.ListView):
         return list(Product.objects.filter(factory=factory_id, scheduled='2'))
 
 
-class CollectedProduct(generic.ListView):
+class CollectedProduct(LoginRequiredMixin, UserPassesTestMixin,generic.ListView):
+    login_url = "/account/"
+    
     template_name = 'factory_admin/collected_list.html'
     model = Product
+
+    def test_func(self):
+        return self.request.user.userlevel == "factory_admin"
 
     def get_queryset(self):
         factory_id = self.request.user.factorystaff.factory.id
@@ -233,9 +303,14 @@ class CollectedProduct(generic.ListView):
         return list(Product.objects.filter(factory=factory_id, scheduled='1', collected='1'))
 
 
-class AddScheduleDate(View):
+class AddScheduleDate(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
     template_name = 'factory_admin/product_update.html'
     form = custForm.UpdateProductScheduleForm
+
+    def test_func(self):
+        return self.request.user.userlevel == "factory_admin"
 
     def get(self, request, **kwargs):
         factory_id = self.request.user.factorystaff.factory.id
@@ -263,9 +338,14 @@ class AddScheduleDate(View):
 
 
 
-class ScheduledProduct(generic.ListView):
+class ScheduledProduct(LoginRequiredMixin, UserPassesTestMixin,generic.ListView):
+    login_url = "/account/"
+    
     template_name = 'factory_admin/scheduled_list.html'
     model = Product
+
+    def test_func(self):
+        return self.request.user.userlevel == "factory_admin"
 
     def get_queryset(self):
         factory_id = self.request.user.factorystaff.factory.id
@@ -274,9 +354,14 @@ class ScheduledProduct(generic.ListView):
         return ProductFilter
 
 
-class CollectProductView(View):
+class CollectProductView(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
     template_name = 'factory_admin/collect_product_form.html'
     form = custForm.UpdateProductQuantity
+
+    def test_func(self):
+        return self.request.user.userlevel == "factory_admin"
 
     def get(self, request, **kwargs):
         product = Product.objects.filter(
@@ -312,9 +397,14 @@ class CollectProductView(View):
 
 
 #add new factory staff
-class CreateFactoryStaff(View):
+class CreateFactoryStaff(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
     userForm = custForm.CreateUserForm
     template_name = 'manager/factory_admin_form.html'
+
+    def test_func(self):
+        return self.request.user.userlevel == "factory_admin"
 
     def get(self, request):
         context = {
@@ -347,9 +437,14 @@ class CreateFactoryStaff(View):
         return render(request, self.template_name, context={'form': form})
 
 
-class FactoryStaffList(generic.ListView):
+class FactoryStaffList(LoginRequiredMixin, UserPassesTestMixin,generic.ListView):
+    login_url = "/account/"
+    
     context_object_name = 'staffs'
     template_name = 'factory_admin/accountant_list.html'
+
+    def test_func(self):
+        return self.request.user.userlevel == "factory_admin"
 
     def get_queryset(self):
         try:
@@ -359,7 +454,12 @@ class FactoryStaffList(generic.ListView):
 
 
 #delete factory staff
-class DeleteStaffMember(View):
+class DeleteStaffMember(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
+    def test_func(self):
+        return self.request.user.userlevel == "factory_admin"
+    
     def get(self, request, pk):
         staff = get_object_or_404(UserModel, pk=pk)
         return render(request, 'factory_admin/account_delete_confirm.html', context={'staff': staff})
@@ -378,8 +478,12 @@ class DeleteStaffMember(View):
         return redirect('factory_admin:staff_list')
 
 
-class PendingBalances(View):
+class PendingBalances(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
     template_name = 'accountant/pending_payment_list.html'
+    def test_func(self):
+        return self.request.user.userlevel == "accountant"
 
     def get(self, request):
         accounts = list()
@@ -397,9 +501,15 @@ class PendingBalances(View):
                 pass
         return render(request, self.template_name, context={"accounts": accounts})
 
-class MakePayDeposit(View):
+class MakePayDeposit(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
     template = 'accountant/make_payment_form.html'
     form = custForm.PayForm
+
+    def test_func(self):
+        return self.request.user.userlevel == "accountant"
+
 
     def get(self, request, **kwargs):
         product = get_object_or_404(Product, pk=kwargs.get('product'))
@@ -447,8 +557,17 @@ class MakePayDeposit(View):
 
 
 #for all staff
-class ProfileView(View):
+class ProfileView(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
     template_name = 'staff/profile.html'
+
+    def test_func(self):
+        userlevel = self.request.user.userlevel
+
+        if userlevel == 'accountant' or userlevel == 'factory_admin' or userlevel == 'manager':
+            return True
+
 
     def get(self, request):
         context = {
