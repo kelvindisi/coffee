@@ -1,0 +1,20 @@
+{% extends 'staff/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+
+<div class="addForm">
+    <div class="product_details">
+        <p><strong>ID: </strong> {{product.farmer.id_number}} </p>
+        <p><strong>NAME: </strong> {{product.farmer.first_name}} {{product.farmer.last_name}} </p>
+        <p><strong>TOTAL: </strong> {{payment.total_amount}} </p>
+        <p><strong>PAID: </strong> {{payment.paid_amount}} </p>
+        <p><strong>BALANCE: </strong> {{payment.balance}} </p>
+    </div>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-outline-success">Save</button>
+    </form>
+</div>
+{% endblock %}

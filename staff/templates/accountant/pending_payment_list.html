@@ -20,7 +20,10 @@
                 <td>{{ payment.product.farmer.id_number }}</td>
                 <td>{{ payment.product.farmer.first_name }} {{ payment.product.farmer.last_name }}</td>
                 <td>{{ payment.balance }}</td>
-                <td></td>
+                <td>
+                    <a href="{% url 'accountant:transact' payment.product.id %}"
+                        class="btn btn-outline-primary btn-sm">Transact</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

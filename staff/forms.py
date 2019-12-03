@@ -1,6 +1,6 @@
 from django import forms
 from account.models import UserModel
-from farmer.models import Product
+from farmer.models import Product, Transaction
 from .models import Factory, FactoryPrice
 
 
@@ -69,3 +69,9 @@ class CreateFactoryPriceForm(forms.ModelForm):
     class Meta:
         model = FactoryPrice
         fields = ['price']
+
+
+class PayForm(forms.ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ['amount']

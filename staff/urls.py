@@ -41,7 +41,7 @@ factory_admin = ([
 
 # factort accountant routes
 factory_accountant = ([
-    path('accounts', views.AccountBalances.as_view(), name="account_details"),
+    path('transact/<int:product>', views.MakePayDeposit.as_view(), name="transact"),
     path('pending_balances', views.PendingBalances.as_view(), name="balances")
 ], 'accountant')
 urlpatterns = [

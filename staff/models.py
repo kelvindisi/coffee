@@ -44,24 +44,3 @@ class Account(models.Model):
 
     def get_absolute_url(self):
         pass
-
-
-class Transaction(models.Model):
-    transaction_types = [
-        ('deposit', 'Deposit'),
-        ('cancel', 'Cancel'),
-        ('correction', 'Correction')
-    ]
-    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    amount = models.IntegerField()
-    date = models.DateField(auto_now_add=True)
-    initiated_by = models.ForeignKey(
-        UserModel, on_delete=models.CASCADE, related_name="accountant")
-    transaction_type = models.CharField(
-        max_length=20, choices=transaction_types)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.amount} - {self.transaction_type}"
-
-    def get_absolute_url(self):
-        pass

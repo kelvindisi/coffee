@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 from django.contrib.auth.models import User
 from django.views import generic, View
 from .models import Factory, FactoryStaff, FactoryPrice
-from farmer.models import Product, Payment
+from farmer.models import Product, Payment, Transaction
 from . import forms as custForm
 from account.models import UserModel
 from django.http import HttpResponse
@@ -377,21 +377,6 @@ class DeleteStaffMember(View):
         return redirect('factory_admin:staff_list')
 
 
-class AccountBalances(View):
-    template_name = 'accountant/customer_account_details.html'
-
-    def get(self, request):
-        sum_pay = set()
-        accounts = list()
-
-        factory_id = request.user.factorystaff.factory.id
-        products = Product.objects.filter(factory=get_object_or_404(Factory, pk=factory_id), collected='1')
-        for product in products:
-            pass
-        
-        return render(request, self.template_name, context={"accounts": accounts})
-
-
 class PendingBalances(View):
     template_name = 'accountant/pending_payment_list.html'
 
@@ -410,3 +395,51 @@ class PendingBalances(View):
             except:
                 pass
         return render(request, self.template_name, context={"accounts": accounts})
+
+class MakePayDeposit(View):
+    template = 'accountant/make_payment_form.html'
+    form = custForm.PayForm
+
+    def get(self, request, **kwargs):
+        product = get_object_or_404(Product, pk=kwargs.get('product'))
+        payment = get_object_or_404(Payment, product=product) 
+        payment.balance = payment.total_amount - payment.paid_amount
+
+        context = {
+                'form': self.form,
+                'product': product,
+                'payment': payment
+            }
+        return render(request, self.template, context)
+    
+    def post(self, request, **kwargs):
+        product = get_object_or_404(Product, pk=kwargs.get('product'))
+        payment = get_object_or_404(Payment, product=product) 
+        payment.balance = payment.total_amount - payment.paid_amount
+
+        form = self.form(request.POST)
+        if form.is_valid():
+            if payment.balance < form.cleaned_data.get('amount'):
+                messages.info(request, "The amount you tried to pay is more than expected")
+                return redirect('accountant:balances') 
+
+            transaction = Transaction.objects.create(
+                product = product,
+                amount = form.cleaned_data.get('amount'),
+                initiated_by = request.user,
+                transaction_type = "deposit"
+            )
+            transaction.save()
+            pay = get_object_or_404(Payment, product=product)
+            pay.paid_amount += form.cleaned_data.get('amount')
+            pay.save()
+
+            return redirect('accountant:balances')
+
+        context = {
+            'form': form,
+            'product': product,
+            'payment': payment
+        }
+        
+        return render(request, self.template, context)

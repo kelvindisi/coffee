@@ -46,3 +46,24 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"{self.product.id} {self.total_amount}"
+
+
+class Transaction(models.Model):
+    transaction_types = [
+        ('deposit', 'Deposit'),
+        ('cancel', 'Cancel'),
+        ('correction', 'Correction')
+    ]
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    amount = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
+    initiated_by = models.ForeignKey(
+        UserModel, on_delete=models.CASCADE, related_name="accountant")
+    transaction_type = models.CharField(
+        max_length=20, choices=transaction_types)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.amount} - {self.transaction_type}"
+
+    def get_absolute_url(self):
+        pass
