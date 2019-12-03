@@ -19,7 +19,9 @@ staff_patterns = ([
     path('delete_factory_admin/<int:pk>/', views.DeleteFactoryStaff.as_view(),
          name="delete_factory_admin"),
     path('edit_factory_admin/<int:pk>/',
-         views.EditFactoryStaff.as_view(), name="edit_factory_admin")
+         views.EditFactoryStaff.as_view(), name="edit_factory_admin"),
+    path('profile/',
+         views.ProfileView.as_view(), name="profile")
 ], 'staff')
 
 # factory admin routes
@@ -36,6 +38,7 @@ factory_admin = ([
          views.CollectProductView.as_view(), name="product_collect"),
     path('accountant', views.CreateFactoryStaff.as_view(), name="add_accountant"),
     path('staff_list', views.FactoryStaffList.as_view(), name="staff_list"),
+    path('staff/<int:pk>/delete', views.DeleteStaffMember.as_view(), name="delete_staff"),
 
 ], 'factory_admin')
 

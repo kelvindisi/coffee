@@ -40,8 +40,7 @@
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Payments Details</a>
                     <div class="dropdown-menu">
                         <a href="{% url 'farmer:pending_payment' %}" class="dropdown-item">Pending Payments</a>
-                        <a href="" class="dropdown-item">Account Details</a>
-                        <a href="{% url 'farmer:payment_history' %}" class="dropdown-item">History</a>
+                        <a href="{% url 'farmer:payment_history' %}" class="dropdown-item">Payment History</a>
                     </div>
                 </li>
                 {% endif %}
@@ -56,9 +55,6 @@
                     <a href="{% url 'account:login' %}" class="nav-link">Login</a>
                 </li>
                 {% else %}
-                <li class="nav-item">
-                    <a href="" class="nav-link">Notifications</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Settings</a>
                     <div class="dropdown-menu">

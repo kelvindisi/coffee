@@ -1,0 +1,31 @@
+{% extends 'staff/layout.html' %}
+
+{% block body %}
+<div class="card deleteForm mt-5">
+    <div class="card-body">
+        <div class="card-title">
+            <h4>Before we delete staff please confirm</h4>
+        </div>
+        <hr>
+        <div class="card-text">
+            <p>Note that the user account will not be permanently deleted</p>
+            <form action="{% url 'staff:delete_factory_admin' staff.pk %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="hidden" name="user_id" value="{{staff.pk}}">
+                </div>
+                <button class="btn btn-danger"><i class="fas fa-trash"></i> Confirm</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .deleteForm {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+</style>
+{% endblock %}

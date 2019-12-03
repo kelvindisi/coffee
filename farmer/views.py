@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_list_or_404, redirect, get_object_or_404
 from django.views import generic, View
 from staff.models import FactoryPrice, Factory
-from .models import Product, Payment
+from .models import Product, Payment, Transaction
 from . import forms as custForm
 from django.contrib import messages
 
@@ -63,6 +63,17 @@ class PendingPayment(View):
         return render(request, self.template_name, context={'payments': pending})
 
 
-class PaymentHistory(generic.ListView):
-    model = Payment
-    # make sure it return for the logged user
+class PaymentHistory(View):
+    context_object_name = "transactions"
+
+    def get(self, request):
+        trans = list()
+        user = self.request.user
+        transactions = Transaction.objects.all()
+        for transaction in transactions:
+            farmer = transaction.product.farmer
+            if farmer.id == user.id:
+                trans.append(transaction)
+        return render(request, 'farmer/transaction_list.html', context={
+            "transactions": trans
+        })

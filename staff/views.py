@@ -7,6 +7,7 @@ from . import forms as custForm
 from account.models import UserModel
 from django.http import HttpResponse
 from django.contrib import messages
+from account.forms import UpdateUserForm, ProfileForm
 
 def index(request):
     return render(request, 'staff/index.html')
@@ -348,7 +349,7 @@ class CreateFactoryStaff(View):
 
 class FactoryStaffList(generic.ListView):
     context_object_name = 'staffs'
-    template_name = 'manager/staff_list.html'
+    template_name = 'factory_admin/accountant_list.html'
 
     def get_queryset(self):
         try:
@@ -361,7 +362,7 @@ class FactoryStaffList(generic.ListView):
 class DeleteStaffMember(View):
     def get(self, request, pk):
         staff = get_object_or_404(UserModel, pk=pk)
-        return render(request, 'manager/confirm_factory_admin_delete.html', context={'staff': staff})
+        return render(request, 'factory_admin/account_delete_confirm.html', context={'staff': staff})
 
     def post(self, request, pk):
         staff_id = request.POST.get('user_id')
@@ -443,3 +444,28 @@ class MakePayDeposit(View):
         }
         
         return render(request, self.template, context)
+
+
+#for all staff
+class ProfileView(View):
+    template_name = 'staff/profile.html'
+
+    def get(self, request):
+        context = {
+            'userForm': UpdateUserForm(instance=request.user),
+            'profileForm': ProfileForm(instance=request.user.profile)
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        user = UpdateUserForm(request.POST, instance=request.user)
+        profile = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if user.is_valid() and profile.is_valid():
+            user.save()
+            profile.save()
+            messages.success(request, 'Account details updated...')
+            return redirect('staff:profile')
+
+        return render(request, self.template_name, context={"userForm": self.user, "profileForm": self.profile})
+        
