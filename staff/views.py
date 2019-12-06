@@ -16,7 +16,7 @@ class HomeView(LoginRequiredMixin, UserPassesTestMixin,View):
     def test_func(self):
         userlevel = self.request.user.userlevel
 
-        if userlevel == 'accountant' or userlevel == 'factory_admin' or userlevel == 'manager':
+        if userlevel == 'accounts' or userlevel == 'factory_admin' or userlevel == 'manager':
             return True
 
     def get(self, request):
@@ -483,7 +483,7 @@ class PendingBalances(LoginRequiredMixin, UserPassesTestMixin,View):
     
     template_name = 'accountant/pending_payment_list.html'
     def test_func(self):
-        return self.request.user.userlevel == "accountant"
+        return self.request.user.userlevel == "accounts"
 
     def get(self, request):
         accounts = list()
@@ -501,6 +501,30 @@ class PendingBalances(LoginRequiredMixin, UserPassesTestMixin,View):
                 pass
         return render(request, self.template_name, context={"accounts": accounts})
 
+class PaymentHistory(LoginRequiredMixin, UserPassesTestMixin,View):
+    login_url = "/account/"
+    
+    template = 'accountant/payment_report.html'
+    form = custForm.PayForm
+
+    def test_func(self):
+        return self.request.user.userlevel == "accounts"
+
+
+    def get(self, request, **kwargs):
+        all = Transaction.objects.all()
+        payments = list()
+        user_factory = self.request.user.factorystaff.factory.id
+
+        for one in all:
+            if one.product.factory.id == user_factory:
+                payments.append(one)
+        context = {
+                'payments': payments
+            }
+        return render(request, self.template, context)
+    
+
 class MakePayDeposit(LoginRequiredMixin, UserPassesTestMixin,View):
     login_url = "/account/"
     
@@ -508,7 +532,7 @@ class MakePayDeposit(LoginRequiredMixin, UserPassesTestMixin,View):
     form = custForm.PayForm
 
     def test_func(self):
-        return self.request.user.userlevel == "accountant"
+        return self.request.user.userlevel == "accounts"
 
 
     def get(self, request, **kwargs):
@@ -522,6 +546,7 @@ class MakePayDeposit(LoginRequiredMixin, UserPassesTestMixin,View):
                 'payment': payment
             }
         return render(request, self.template, context)
+
     
     def post(self, request, **kwargs):
         product = get_object_or_404(Product, pk=kwargs.get('product'))
@@ -565,7 +590,7 @@ class ProfileView(LoginRequiredMixin, UserPassesTestMixin,View):
     def test_func(self):
         userlevel = self.request.user.userlevel
 
-        if userlevel == 'accountant' or userlevel == 'factory_admin' or userlevel == 'manager':
+        if userlevel == 'accounts' or userlevel == 'factory_admin' or userlevel == 'manager':
             return True
 
 

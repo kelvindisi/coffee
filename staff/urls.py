@@ -12,9 +12,9 @@ staff_patterns = ([
          views.FactoryDeleteView.as_view(), name="factory_delete"),
     path('factories/update/<int:pk>',
          views.FactoryUpdateView.as_view(), name="factory_update"),
-    path('station_admin/add/', views.CreateFactoryAdmin.as_view(),
+    path('factory_admin/add/', views.CreateFactoryAdmin.as_view(),
          name="add_station_admin"),
-    path('station_admins/', views.FactoryAdminList.as_view(),
+    path('factory_admins/', views.FactoryAdminList.as_view(),
          name="factory_admins_list"),
     path('delete_factory_admin/<int:pk>/', views.DeleteFactoryStaff.as_view(),
          name="delete_factory_admin"),
@@ -46,6 +46,7 @@ factory_admin = ([
 # factort accountant routes
 factory_accountant = ([
     path('transact/<int:product>', views.MakePayDeposit.as_view(), name="transact"),
+    path('payment_history', views.PaymentHistory.as_view(), name="payment_history"),
     path('pending_balances', views.PendingBalances.as_view(), name="balances")
 ], 'accountant')
 urlpatterns = [

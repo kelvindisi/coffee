@@ -22,6 +22,7 @@
         </button>
         <div class="collapse navbar-collapse" id="homeNav">
             <ul class="navbar-nav">
+                {% if user.userlevel == 'manager'%}
                 <!--Super Adminstrator-->
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-warehouse"></i>
@@ -40,8 +41,9 @@
                     </div>
                 </li>
                 <!--End of Super admin-->
+                {% elif user.userlevel == 'factory_admin' %}
                 <!--Factory Adminstrator-->
-                
+
                 <li class="nav-item dropdown">
                     <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown"> <i class="fas fa-user"></i>
                         Staff</a>
@@ -59,14 +61,15 @@
                     </div>
                 </li>
                 <!--End of Factory admin-->
-
+                {% elif user.userlevel == 'accounts' %}
                 <!--Factory Accountant-->
-                <li class="nav-item dropdown">
-                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Accounts</a>
-                    <div class="dropdown-menu">
-                        <a href="{% url 'accountant:balances' %}" class="dropdown-item">Pending Payment</a>
-                    </div>
+                <li class="nav-item">
+                    <a href="{% url 'accountant:balances' %}" class="nav-link">Pending Payment</a>
                 </li>
+                <li class="nav-item">
+                    <a href="{% url 'accountant:payment_history' %}" class="nav-link">Payment History</a>
+                </li>
+                {% endif %}
                 <!--TO WORK ONCE THE APPLICATION IS FULLY WORKING
                 <div class="nav-item dropdown">
                     <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown"> <i class="fas fa-book"></i>
