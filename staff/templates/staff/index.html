@@ -2,9 +2,27 @@
 
 {% block body %}
 <div class="mt-4 container">
-    <h3>Your logged in with {{ user.id_number }}!</h3>
-    <div class="card-decks">
+    <div class="text-right">
+        <h3>Your logged in with {{ user.id_number }}!</h3>
+        <p>
+            You can perfom the task of
+            {% if user.userlevel == "manager" %}
+            Super Admins.
+            {% elif user.userlevel == "factory_admin" %}
+            Super Admins.
+            {% elif user.userlevel == "accounts" %}
+            Accountant.
+            {% endif %}
+        </p>
+    </div>
+    <hr>
 
+    <div class="card">
+        <h3 class="text-muted">
+            TO FIND SOMETHING TO PUT HERE
+        </h3>
     </div>
 </div>
+{% endblock %}
+{% block styles %}
 {% endblock %}

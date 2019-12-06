@@ -5,10 +5,13 @@ from .models import Factory, FactoryPrice
 
 
 class CreateUserForm(forms.ModelForm):
-    facts = Factory.objects.all()
     fact_choices = []
-    for factory in facts:
-        fact_choices.append((factory.id, factory.name))
+    try:
+        facts = Factory.objects.all()
+        for factory in facts:
+            fact_choices.append((factory.id, factory.name))
+    except:
+        fact_choices = []
     factories = forms.CharField(widget=forms.Select(choices=fact_choices))
     password = forms.CharField(widget=forms.PasswordInput)
 
@@ -19,11 +22,14 @@ class CreateUserForm(forms.ModelForm):
 
 
 class UpdateUserForm(forms.ModelForm):
-    facts = Factory.objects.all()
     fact_choices = []
+    try:
+        facts = Factory.objects.all()
 
-    for factory in facts:
-        fact_choices.append((factory.id, factory.name))
+        for factory in facts:
+            fact_choices.append((factory.id, factory.name))
+    except:
+        fact_choices = []
 
     factories = forms.CharField(widget=forms.Select(choices=fact_choices))
 

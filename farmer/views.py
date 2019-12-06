@@ -9,6 +9,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 class HomePageView(View):
     def get(self, request):
+        userlevel = self.request.user.userlevel
+
+        if userlevel == 'accounts' or userlevel == 'factory_admin' or userlevel == 'manager':
+            return redirect('staff:index')
+        
+        
         top_factory = FactoryPrice.objects.all()[:10]
         context = {
             "factories": top_factory

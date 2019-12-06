@@ -41,6 +41,3 @@ class Account(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.balance}"
-
-    def get_absolute_url(self):
-        pass
